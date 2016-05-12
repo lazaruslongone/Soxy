@@ -12,22 +12,6 @@ SOXY_LOG="${SOXY_DIR}/soxy.log"
 SOXY_PID_FILE="${SOXY_PID_FILE:-${SOXY_DIR}/soxy.pid}"
 
 
-## LOAD TEXT FORMATTER
-########################################
-
-function format() {
-    echo -e "${1}"
-}
-
-if [[ -t 1 ]]; then
-    if [[ -f "${SCRIPT_PATH}/format.sh" ]]; then
-        source ${SCRIPT_PATH}/format.sh
-    else
-        echo "NOTICE: ${SCRIPT_PATH}/format.sh not found... omitting color output"
-    fi
-fi
-
-
 ## CREATE SOXY DIR IF MISSING
 ########################################
 
@@ -71,12 +55,8 @@ function startSocks {
         ssh -qfCD 0.0.0.0:${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT} -N & > /dev/null 2>&1
         printf "Success! Soxy proxy running on port ${LOCAL_PORT} (PID: $(getPid)) "
         echo "$(getPid)" > "${SOXY_PID_FILE}"
-        # Echo status message to console
-        echo "[ $(format OK ${GREEN} ${BOLD}) ]"
 
     else
-
-        echo "[$(format FAIL ${RED} ${BOLD} ${BLACK})]"
         echo "Soxy already running, must be stopped first"
 
     fi
@@ -98,14 +78,8 @@ function stopSocks {
         if [[ -f ${SOXY_PID_FILE} ]]; then
             rm -rf ${SOXY_PID_FILE}
         fi
-        # Echo status message to console
-        echo "[ $(format OK ${GREEN} ${BOLD}) ]"
-
     else
-
-        echo "[$(format FAIL ${RED} ${BOLD} ${BLACK})]"
         echo "No running Soxy process found"
-
     fi
 
 }
