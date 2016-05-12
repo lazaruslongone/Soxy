@@ -69,7 +69,7 @@ function startSocks {
 
         # Establish SOCKS connection
         ssh -qfCD 0.0.0.0:${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT} -N & > /dev/null 2>&1
-        echo "Soxy proxy running on port ${LOCAL_PORT} (PID: $(getPid))"
+        printf "Success! Soxy proxy running on port ${LOCAL_PORT} (PID: $(getPid)) "
         echo "$(getPid)" > "${SOXY_PID_FILE}"
         # Echo status message to console
         echo "[ $(format OK ${GREEN} ${BOLD}) ]"
@@ -85,12 +85,11 @@ function startSocks {
 
 
 function stopSocks {
-
-    # Echo status message to console
-    printf "Stopping Soxy proxy on port %-6s    " ${LOCAL_PORT}
-
     # Get the PID
     local PID="$(getPid)"
+
+    # Echo status message to console
+    printf "Stopping Soxy proxy on port %-3s (PID: ${PID}) " ${LOCAL_PORT}
 
     if [[ ! -z "${PID}" ]]; then
 
