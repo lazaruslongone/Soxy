@@ -9,6 +9,7 @@ SCRIPT_PATH="$(dirname $(readlink -f ${0}))"
 SOXY_DIR="${SOXY_DIR:-${HOME}/.soxy}"
 SOXY_CONF="${SOXY_DIR}/config"
 SOXY_LOG="${SOXY_DIR}/soxy.log"
+SOXY_PID_FILE="${SOXY_PID_FILE:-${SOXY_DIR}/soxy.pid}"
 
 
 ## LOAD TEXT FORMATTER
@@ -27,7 +28,7 @@ if [[ -t 1 ]]; then
 fi
 
 
-## CREAT SOXY DIR IF MISSING
+## CREATE SOXY DIR IF MISSING
 ########################################
 
 [[ -d "${SOXY_DIR}" ]] || mkdir -p ${SOXY_DIR}
@@ -62,14 +63,14 @@ function getPid {
 function startSocks {
 
     # Echo status message to console
-    printf "Starting Soxy proxy on port %-6s    " ${LOCAL_PORT}
+    printf "Starting Soxy proxy on port %-6s    \n" ${LOCAL_PORT}
 
     if [[ -z "$(getPid)" ]]; then
 
         # Establish SOCKS connection
         ssh -qfCD 0.0.0.0:${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT} -N & > /dev/null 2>&1
-
-
+        echo "Soxy proxy running on port ${LOCAL_PORT} (PID: $(getPid))"
+        echo "$(getPid)" > "${SOXY_PID_FILE}"
         # Echo status message to console
         echo "[ $(format OK ${GREEN} ${BOLD}) ]"
 
@@ -95,7 +96,9 @@ function stopSocks {
 
         # Kill the process
         kill ${PID} > /dev/null 2>&1
-
+        if [[ -f ${SOXY_PID_FILE} ]]; then
+            rm -rf ${SOXY_PID_FILE}
+        fi
         # Echo status message to console
         echo "[ $(format OK ${GREEN} ${BOLD}) ]"
 
