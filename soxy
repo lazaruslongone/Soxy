@@ -6,7 +6,7 @@ set -o errexit -o pipefail
 ########################################
 
 SCRIPT_PATH="$(dirname $(readlink -f ${0}))"
-SOXY_DIR="${HOME}/.soxy"
+SOXY_DIR="${SOXY_DIR:-${HOME}/.soxy}"
 SOXY_CONF="${SOXY_DIR}/config"
 SOXY_LOG="${SOXY_DIR}/soxy.log"
 
@@ -67,7 +67,8 @@ function startSocks {
     if [[ -z "$(getPid)" ]]; then
 
         # Establish SOCKS connection
-        ssh -qfCD ${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT} -N & > /dev/null 2>&1
+        ssh -qfCD 0.0.0.0:${LOCAL_PORT} ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT} -N & > /dev/null 2>&1
+
 
         # Echo status message to console
         echo "[ $(format OK ${GREEN} ${BOLD}) ]"
