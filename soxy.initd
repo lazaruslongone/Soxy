@@ -5,7 +5,7 @@
 
 SOXY_DIR="/etc/${SVCNAME}"
 SOXY_CONFFILE="${SOXY_DIR}/config"
-SOXY_BIN="/usr/local/bin/soxy"
+SOXY_BIN="/usr/bin/soxy"
 SOXY_PID_FILE="/var/run/soxy.pid"
 
 depend() {
