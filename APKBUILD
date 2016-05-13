@@ -4,7 +4,7 @@
 # vim: set ft=sh:
 
 pkgname=soxy
-pkgver=0.2.0
+pkgver=0.3.0
 pkgrel=0
 pkgdesc="a tool to help daemonize ssh as a socks proxy"
 pkgusers="soxy"
