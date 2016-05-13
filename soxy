@@ -5,7 +5,10 @@ set -o errexit -o pipefail
 ## SCRIPT VARS, DON'T MODIFY
 ########################################
 
-SCRIPT_PATH="$(dirname $(readlink -f ${0}))"
+if [[ -f /etc/profile.d/soxy ]]; then
+  source /etc/profile.d/soxy
+fi
+
 SOXY_DIR="${SOXY_DIR:-${HOME}/.soxy}"
 SOXY_CONF="${SOXY_DIR}/config"
 SOXY_LOG="${SOXY_DIR}/soxy.log"
@@ -22,8 +25,8 @@ SOXY_PID_FILE="${SOXY_PID_FILE:-${SOXY_DIR}/soxy.pid}"
 ########################################
 
 if [[ ! -r "${SOXY_CONF}" ]]; then
-    cp "${SCRIPT_PATH}/config.sample" ${SOXY_CONF}
-    echo "WARNING: Soxy config not found, default config file created at ${SOXY_CONF}"
+    echo "WARNING: Soxy config not found"
+    echo "Please create one at ${SOXY_CONF}"
     exit 1
 fi
 
