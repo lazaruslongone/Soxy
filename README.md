@@ -3,6 +3,7 @@ Soxy - Quick and easy SOCKS proxy management
 Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
 & [Charles Bock](http://www.blastwavelabs.com)
 
+Tweaks and changes by [lazaruslongone](http://github.com/lazaruslongone)
 
 Configuration
 -------------
