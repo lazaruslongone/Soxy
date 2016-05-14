@@ -36,6 +36,20 @@ source ${SOXY_CONF}
 ## FUNCTIONS
 ########################################
 
+function sshKeySetup {
+
+  if [[ ! -f "/${REMOTE_USER}/.ssh/id_rsa" ]];
+  then
+    echo "Setting up ssh key"
+    mkdir -p /${REMOTE_USER}/.ssh
+    chmod 700 /${REMOTE_USER}/.ssh
+    ssh-keygen -n 8192 -t rsa -N "" -C soxy -f /${REMOTE_USER}/.ssh/id_rsa -q
+    cat /root/.ssh/id_rsa.pub > /${REMOTE_USER}/.ssh/authorized_keys
+    ssh-keyscan -H "${REMOTE_HOST}",127.0.0.1 >> ~/.ssh/known_hosts
+    echo "ssh key setup"
+  fi
+}
+
 function getPid {
 
     # Get the PID
@@ -48,6 +62,9 @@ function getPid {
 
 
 function startSocks {
+
+		# setup ssh key related bits
+    sshKeySetup
 
     # Echo status message to console
     printf "Starting Soxy proxy on port %-6s    \n" ${LOCAL_PORT}
