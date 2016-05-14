@@ -10,7 +10,7 @@ SOXY_PID_FILE="/var/run/soxy.pid"
 
 depend() {
         use logger dns
-        need net
+        need net sshd
         after firewall
 }
 
