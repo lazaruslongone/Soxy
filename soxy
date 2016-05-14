@@ -45,7 +45,7 @@ function sshKeySetup {
     chmod 700 /${REMOTE_USER}/.ssh
     ssh-keygen -n 8192 -t rsa -N "" -C soxy -f /${REMOTE_USER}/.ssh/id_rsa -q
     cat /root/.ssh/id_rsa.pub > /${REMOTE_USER}/.ssh/authorized_keys
-    ssh-keyscan -H "${REMOTE_HOST}",127.0.0.1 >> ~/.ssh/known_hosts
+    ssh-keyscan -H "${REMOTE_HOST}",127.0.0.1 > /${REMOTE_USER}/.ssh/known_hosts
     echo "ssh key setup"
   fi
 }
